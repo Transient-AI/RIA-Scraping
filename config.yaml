@@ -1,0 +1,72 @@
+# RIA Data Processor Configuration
+
+# Data source configuration
+data_source:
+  base_url: "https://adviserinfo.sec.gov/"
+  timeout: 300  # seconds
+
+# Processing configuration
+processing:
+  month: "October"  # Month name (e.g., January, February, etc.)
+  year: 2025
+  incremental_update: true  # If true, only process if data has changed
+  force_refresh: false  # If true, always reprocess regardless of existing data
+  cleanup_raw_files: false  # If true, delete extracted CSV files after processing
+  retry_attempts: 3
+  retry_delay: 10  # seconds
+  use_existing_zip: false  # If true, use existing ZIP file instead of downloading
+  
+# File paths configuration
+paths:
+  raw_data: "./data/raw"
+  processed_data: "./data/processed"
+  reports: "./data/reports"
+  archive: "./data/archive"
+
+# Azure Blob Storage configuration (for future use)
+azure:
+  enabled: false  # Set to true when ready to use Azure
+  connection_string: ""  # Add your Azure connection string
+  container_name: "ria-data"
+  upload_raw: false
+  upload_processed: true
+  delete_local_after_upload: false
+
+# Data quality checks
+quality_checks:
+  check_duplicates: true
+  check_nulls: true
+  validate_crd: true
+  validate_dates: true
+
+# Logging configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file_logging: true
+  log_file: "./data/reports/ria_processor.log"
+  max_log_size_mb: 10
+  backup_count: 5
+
+# Email notifications (optional)
+notifications:
+  enabled: false
+  smtp_server: ""
+  smtp_port: 587
+  sender_email: ""
+  sender_password: ""
+  recipient_emails: []
+  send_on_success: true
+  send_on_error: true
+
+# Performance settings
+performance:
+  chunk_size: 10000  # Number of rows to process at once
+  max_workers: 4  # For parallel processing
+  memory_limit_gb: 8
+
+# Data retention
+retention:
+  keep_raw_days: 30
+  keep_processed_days: 365
+  keep_reports_days: 90
+  archive_old_data: true
